@@ -6,7 +6,7 @@ Windows form made with vb to parse a scanned QR code for a specific application
 * compares read string with predefined part numbers
 * verifies string length
 * verifies string format
-* verifies Julian date code 
+* verifies ISO date code 
 * creates visual for user to know if the QR is correct
 * informs user if QR is incorrect
 

@@ -70,6 +70,8 @@ Partial Class Form1
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.Label46 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -588,12 +590,40 @@ Partial Class Form1
         Me.Label44.TabIndex = 46
         Me.Label44.Text = "Valid Thru 2026"
         '
+        'Label45
+        '
+        Me.Label45.AutoEllipsis = True
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Perpetua Titling MT", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.ForeColor = System.Drawing.Color.Orange
+        Me.Label45.Location = New System.Drawing.Point(803, 484)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(86, 24)
+        Me.Label45.TabIndex = 47
+        Me.Label45.Text = "Debug"
+        Me.Label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label46
+        '
+        Me.Label46.AutoEllipsis = True
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Perpetua Titling MT", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.ForeColor = System.Drawing.Color.Orange
+        Me.Label46.Location = New System.Drawing.Point(803, 508)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(86, 24)
+        Me.Label46.TabIndex = 48
+        Me.Label46.Text = "Debug"
+        Me.Label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(978, 611)
+        Me.Controls.Add(Me.Label46)
+        Me.Controls.Add(Me.Label45)
         Me.Controls.Add(Me.Label44)
         Me.Controls.Add(Me.Label43)
         Me.Controls.Add(Me.Label37)
@@ -696,4 +726,6 @@ Partial Class Form1
     Friend WithEvents Label42 As Label
     Friend WithEvents Label43 As Label
     Friend WithEvents Label44 As Label
+    Friend WithEvents Label45 As Label
+    Friend WithEvents Label46 As Label
 End Class

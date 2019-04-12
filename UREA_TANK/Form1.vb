@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.Globalization
+
+Public Class Form1
     Public xtraData As String
     Public baseNum As String
     Public tmdNum As String
@@ -11,7 +13,8 @@
     Public scanned As String
     Public convMonth As String
     Public convDay As String
-    Public convDate As String
+    Public calcDayofMonth As String
+    Public fisrtThursdayRuleApplies As Boolean
     Public x As Integer
 
 
@@ -136,18 +139,18 @@
             Case 23
                 x = 6
             Case 24
-                x = 0
+                x = 7
             Case 25
-                x = 2
+                x = 9
             Case 26
-                x = 3
+                x = 10
 
         End Select
         If julYear = "20" Or julYear = "24" Or julYear = "28" Or julYear = "32" Then
-            'Label37.Text = " Leap Year convDate is " & julYear & julYear.GetType.ToString
+            'Label37.Text = " Leap Year calcDayofMonth is " & julYear & julYear.GetType.ToString
             LeapYear()
         Else
-            'Label37.Text = " convDate is " & convDate
+            'Label37.Text = " calcDayofMonth is " & calcDayofMonth
             RegYear()
         End If
 
@@ -156,46 +159,54 @@
         Try
             Dim i As Integer
             i = ((julWeek * 7) - x) + julDay
-
+            'Label46.Text = i
             Select Case i
+                Case <= 0
+                    convMonth = "December"
+                    calcDayofMonth = 31 - i
+                    fisrtThursdayRuleApplies = True
                 Case 1 To 31
                     convMonth = "January"
-                    convDate = i - 0
+                    calcDayofMonth = i - 0
                 Case 32 To 59
                     convMonth = "February"
-                    convDate = i - 31
+                    calcDayofMonth = i - 31
                 Case 60 To 90
                     convMonth = "March"
-                    convDate = i - 59
+                    calcDayofMonth = i - 59
                 Case 91 To 120
                     convMonth = "April"
-                    convDate = i - 90
+                    calcDayofMonth = i - 90
                 Case 121 To 151
                     convMonth = "May"
-                    convDate = i - 120
+                    calcDayofMonth = i - 120
                 Case 152 To 181
                     convMonth = "June"
-                    convDate = i - 151
+                    calcDayofMonth = i - 151
                 Case 182 To 212
                     convMonth = "July"
-                    convDate = i - 181
+                    calcDayofMonth = i - 181
                 Case 213 To 243
                     convMonth = "August"
-                    convDate = i - 212
+                    calcDayofMonth = i - 212
                 Case 244 To 273
                     convMonth = "September"
-                    convDate = i - 243
+                    calcDayofMonth = i - 243
                 Case 274 To 304
                     convMonth = "October"
-                    convDate = i - 273
+                    calcDayofMonth = i - 273
                 Case 305 To 334
                     convMonth = "November"
-                    convDate = i - 304
+                    calcDayofMonth = i - 304
                 Case 335 To 365
                     convMonth = "December"
-                    convDate = i - 334
+                    calcDayofMonth = i - 334
+                Case >= 366
+                    convMonth = "January"
+                    fisrtThursdayRuleApplies = True
+                    calcDayofMonth = i - 365
             End Select
-            'Label37.Text = i & " = " & julWeek & " x 7 - " & x & " + " & julDay & " convDate is " & convDate
+            'Label37.Text = i & " = " & julWeek & " x 7 - " & x & " + " & julDay & " calcDayofMonth is " & calcDayofMonth
         Catch ex As Exception
             MessageBox.Show("Serial Number Not Configured Correctly. " & String.Format("Error: {0}", ex.Message))
         End Try
@@ -204,49 +215,71 @@
         Try
             Dim i As Integer
             i = ((julWeek * 7) - x) + julDay
+            'Label46.Text = i
             Select Case i
+                Case <= 0
+                    convMonth = "December"
+                    calcDayofMonth = 31 + i
+                    fisrtThursdayRuleApplies = True
                 Case 1 To 31
                     convMonth = "January"
-                    convDate = i - 0
+                    calcDayofMonth = i - 0
                 Case 32 To 60
                     convMonth = "February"
-                    convDate = i - 31
+                    calcDayofMonth = i - 31
                 Case 61 To 91
                     convMonth = "March"
-                    convDate = i - 60
+                    calcDayofMonth = i - 60
                 Case 92 To 121
                     convMonth = "April"
-                    convDate = i - 91
+                    calcDayofMonth = i - 91
                 Case 122 To 152
                     convMonth = "May"
-                    convDate = i - 121
+                    calcDayofMonth = i - 121
                 Case 153 To 182
                     convMonth = "June"
-                    convDate = i - 152
+                    calcDayofMonth = i - 152
                 Case 183 To 213
                     convMonth = "July"
-                    convDate = i - 182
+                    calcDayofMonth = i - 182
                 Case 214 To 244
                     convMonth = "August"
-                    convDate = i - 213
+                    calcDayofMonth = i - 213
                 Case 245 To 274
                     convMonth = "September"
-                    convDate = i - 244
+                    calcDayofMonth = i - 244
                 Case 275 To 305
                     convMonth = "October"
-                    convDate = i - 274
+                    calcDayofMonth = i - 274
                 Case 306 To 335
                     convMonth = "November"
-                    convDate = i - 305
+                    calcDayofMonth = i - 305
                 Case 336 To 366
                     convMonth = "December"
-                    convDate = i - 335
+                    calcDayofMonth = i - 335
+                Case >= 367
+                    convMonth = "January"
+                    fisrtThursdayRuleApplies = True
+                    calcDayofMonth = i - 366
+
             End Select
 
         Catch ex As Exception
             MessageBox.Show("Serial Number Not Configured Correctly. " & String.Format("Error: {0}", ex.Message))
         End Try
     End Sub
+    Public Shared Function GetISOWeekOfYear(dt As DateTime) As Integer
+        Dim cal As Calendar = CultureInfo.InvariantCulture.Calendar
+        Dim d As DayOfWeek = cal.GetDayOfWeek(dt)
+
+        If (d >= DayOfWeek.Monday) AndAlso (d <= DayOfWeek.Wednesday) Then
+            dt = dt.AddDays(3)
+        End If
+
+        Return cal.GetWeekOfYear(dt, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday)
+
+    End Function
+
     Private Sub CompareDate()
         Dim nowWeek As Integer = DatePart(DateInterval.WeekOfYear, Date.Today)
         Dim nowDayString As String = Date.Today.DayOfWeek.ToString()
@@ -257,9 +290,23 @@
         Dim nowDate As Integer = DatePart(DateInterval.Day, Date.Today)
         Dim formatDate As String
         Dim weekDif As Integer
+        'Label45.Text = GetISOWeekOfYear(dt:=Now) & " " & calcDayofMonth
+        If fisrtThursdayRuleApplies Then
+            If convMonth = "December" Then
+                formatDate = convDay & ", " & convMonth & " " & calcDayofMonth & ", 20" & julYear - 1
+            Else
+                formatDate = convDay & ", " & convMonth & " " & calcDayofMonth & ", 20" & julYear + 1
+            End If
+        Else
+                formatDate = convDay & ", " & convMonth & " " & calcDayofMonth & ", 20" & julYear
+        End If
 
-        formatDate = convDay & ", " & convMonth & " " & convDate & ", 20" & julYear
         Label43.Text = "Today's date is " & vbNewLine & nowMonth & vbNewLine & " The date of scanned label is " & vbNewLine & formatDate & " "
+        If nowYear >= 27 Or julYear >= 27 Then
+            Label36.ForeColor = Color.Red
+            Label36.Text = "THIS PROGRAM IS NOT" & vbNewLine & "VALID PAST THE YEAR 2026"
+            Exit Sub
+        End If
         If nowYear < julYear Then
             Label36.ForeColor = Color.Red
             Label36.Text = "The date of this label" & vbNewLine & "indicates a future date"
@@ -313,7 +360,7 @@
                 MessageBox.Show("This label was NOT printed today!",
                         "**WARNING** VERIFY DATE")
                 Exit Sub
-            ElseIf nowYear >= 27 Then
+            ElseIf nowYear >= 27 Or julYear >= 27 Then
                 Label36.ForeColor = Color.Red
                 Label36.Text = "THIS PROGRAM IS NOT" & vbNewLine & "VALID PAST THE YEAR 2026"
             Else
@@ -370,6 +417,8 @@
         Label29.Text = ""
         Label36.Text = ""
         Label43.Text = ""
+        Label45.Text = ""
+        Label46.Text = ""
         xtraData = ""
         baseNum = ""
         tmdNum = ""
@@ -381,11 +430,16 @@
         scanned = ""
         convMonth = ""
         convDay = ""
-        convDate = ""
+        calcDayofMonth = ""
         x = 0
         TextBox1.Select()
         partMatch = False
-
+        fisrtThursdayRuleApplies = False
+        'Label45.Text = GetISOWeekOfYear(dt:=Now) & " " & Now
+        For n As Integer = 2017 To 2028
+            Console.WriteLine("{0}: week:{1}", n.ToString,
+                              GetISOWeekOfYear(New DateTime(n, 12, 31)).ToString)
+        Next
 
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
